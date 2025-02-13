@@ -1,0 +1,110 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: |
+            Release automática da aplicação.
+          draft: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/bundle.js
+          asset_name: bundle.js
+          asset_content_type: application/javascript
+      
+       - name: Send email notification on failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const output = await github.rest.actions.listJobsForWorkflowRun({
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             run_id: context.runId,
+            });
+            
+            let job_error_message = ''
+            output.data.jobs.forEach((job) => {
+              if (job.conclusion == 'failure'){
+                job_error_message += `Job ${job.name} failed.  See log at ${job.html_url}. \n`
+              }
+            })
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `CI Failed on this run.  See logs \n ${job_error_message}`
+            })
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+      url: http://aquiasuaurl.com # URL da aplicação
+    steps:
+      - name: Deploy to test environment
+        run: echo "Deploying to test environment..."
+
+      - name: Send email notification on failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const output = await github.rest.actions.listJobsForWorkflowRun({
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             run_id: context.runId,
+            });
+            
+            let job_error_message = ''
+            output.data.jobs.forEach((job) => {
+              if (job.conclusion == 'failure'){
+                job_error_message += `Job ${job.name} failed.  See log at ${job.html_url}. \n`
+              }
+            })
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `CI Failed on this run.  See logs \n ${job_error_message}`
+            })    

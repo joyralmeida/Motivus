@@ -1,0 +1,15 @@
+{
+    "name": "motivus",
+    "version": "1.0.0",
+    "scripts": {
+      "install": "npm install",
+      "test": "jest",
+      "build": "webpack",
+      "deploy": "node deploy.js"
+    },
+    "dependencies": {
+      "jest": "^27.0.0",
+      "webpack": "^5.0.0",
+      "webpack-cli": "^4.0.0"
+    }
+  }
