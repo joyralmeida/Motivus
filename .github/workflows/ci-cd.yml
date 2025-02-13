@@ -48,8 +48,8 @@ jobs:
           asset_path: ./dist/bundle.js
           asset_name: bundle.js
           asset_content_type: application/javascript
-      
-       - name: Send email notification on failure
+
+      - name: Send email notification on failure
         if: failure()
         uses: actions/github-script@v6
         with:
@@ -59,7 +59,7 @@ jobs:
              repo: context.repo.repo,
              run_id: context.runId,
             });
-            
+
             let job_error_message = ''
             output.data.jobs.forEach((job) => {
               if (job.conclusion == 'failure'){
@@ -94,7 +94,7 @@ jobs:
              repo: context.repo.repo,
              run_id: context.runId,
             });
-            
+
             let job_error_message = ''
             output.data.jobs.forEach((job) => {
               if (job.conclusion == 'failure'){
