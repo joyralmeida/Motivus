@@ -9,30 +9,30 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    steps:
-      # 1. Checkout do código
+     steps:
+      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2. Configuração do Node.js
+      # Configuração do Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16.20.2'
 
-      # 3. Atualizar npm para a versão mais recente
+      # Atualizar npm para uma versão compatível
       - name: Update npm
         run: npm install -g npm@8
 
-      # 4. Limpar o cache do npm
+      # Limpar o cache do npm
       - name: Clean npm cache
         run: npm cache clean --force
 
-      # 5. Configurar um registro alternativo (se necessário)
+      # Configurar um registro alternativo (opcional)
       - name: Configure npm registry
         run: npm config set registry https://registry.npmmirror.com
 
-      # 6. Habilitar cache de dependências
+      # Cache de dependências do npm
       - name: Cache Node.js modules
         uses: actions/cache@v2
         with:
@@ -41,9 +41,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 7. Instalar dependências com logs detalhados e flags adicionais
+      # Instalar dependências
       - name: Install dependencies
         run: npm install --no-fund --verbose --unsafe-perm
+
+      # Exibir logs detalhados (em caso de erro)
+      - name: Display npm error log
+        if: failure()
+        run: cat /home/runner/.npm/_logs/*.log
 
       # 8. Executar testes
       - name: Run tests
