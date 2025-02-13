@@ -18,11 +18,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.17.0'
+          node-version: '16.20.2'
 
       # 3. Atualizar npm para a versão mais recente
       - name: Update npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@8
 
       # 4. Limpar o cache do npm
       - name: Clean npm cache
