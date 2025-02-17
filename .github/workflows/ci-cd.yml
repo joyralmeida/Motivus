@@ -26,9 +26,6 @@ jobs:
       - name: Checar Versao
         run: npm version
 
-      - name: build 
-        run: npm run build
-
       # Limpar o cache do npm
       - name: Clean npm cache
         run: npm cache clean --force
