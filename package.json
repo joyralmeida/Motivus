@@ -2,7 +2,6 @@
     "name": "motivus",
     "version": "1.0.0",
     "scripts": {
-      "install": "npm install",
       "test": "jest",
       "build": "webpack",
       "deploy": "node deploy.js"
