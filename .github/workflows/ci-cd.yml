@@ -21,10 +21,7 @@ jobs:
 
       # Atualizar npm para uma versão compatível
       - name: Update npm
-        run: npm install
-
-      - name: Checar Versao
-        run: npm version
+        run: npm install -g npm@8
 
       # Limpar o cache do npm
       - name: Clean npm cache
@@ -34,18 +31,18 @@ jobs:
       # - name: Configure npm registry
       #   run: npm config set registry https://registry.npmmirror.com
 
-      # # Cache de dependências do npm
-      # - name: Cache Node.js modules
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.npm
-      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: 
-      #       ${{ runner.os }}-node-
+      # Cache de dependências do npm
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: 
+            ${{ runner.os }}-node-
 
-      # # Instalar dependências
-      # - name: Install dependencies
-      #   run: npm run clean && npm install
+      # Instalar dependências
+      - name: Install dependencies
+        run: npm install --no-fund --verbose --unsafe-perm
 
       # Exibir logs detalhados (em caso de erro)
       - name: Display npm error log
