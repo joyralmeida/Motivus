@@ -23,6 +23,9 @@ jobs:
       - name: Update npm
         run: npm install -g npm@8
 
+      - name: Checar Versao
+        run: npm version
+
       # Limpar o cache do npm
       - name: Clean npm cache
         run: npm cache clean --force
