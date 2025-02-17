@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+     permissions:
+      contents: write  # Permissão para escrever no conteúdo do repositório (criar releases)
     steps:
       # Checkout do código
       - name: Checkout code
