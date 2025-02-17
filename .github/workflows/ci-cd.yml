@@ -21,7 +21,7 @@ jobs:
 
       # Atualizar npm para uma versão compatível
       - name: Update npm
-        run: npm install -g npm@8
+        run: npm install
 
       - name: Checar Versao
         run: npm version
