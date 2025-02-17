@@ -42,7 +42,7 @@ jobs:
 
       # Instalar dependências
       - name: Install dependencies
-        run: npm ci
+        run: npm run clean && npm install
 
       # Exibir logs detalhados (em caso de erro)
       - name: Display npm error log
