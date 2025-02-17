@@ -71,13 +71,13 @@ jobs:
           draft: false
 
       - name: Check if asset exists
-       run: 
-        if [ -f "./dist/bundle.js" ]; then
-         echo "Arquivo bundle.js encontrado."
-        else
-         echo "Arquivo bundle.js não encontrado."
-         exit 1
-        fi
+        run: 
+         if [ -f "./dist/bundle.js" ]; then
+          echo "Arquivo bundle.js encontrado."
+         else
+          echo "Arquivo bundle.js não encontrado."
+          exit 1
+         fi
 
       # 11. Fazer upload do artefato para a release
       - name: Upload Release Asset
