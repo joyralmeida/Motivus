@@ -42,7 +42,7 @@ jobs:
 
       # Instalar dependências
       - name: Install dependencies
-        run: npm install --no-fund --verbose --unsafe-perm
+        run: npm install
 
       # Exibir logs detalhados (em caso de erro)
       - name: Display npm error log
